@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block main %}
+    {%  for item in rut  %}
+    <div style='display:inline-grid;'>
+        <img src="/static/uploads/{{ item }}" height='200' width='200'/>
+    </div>
+    {% endfor %}
+{% endblock %}
+

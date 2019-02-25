@@ -36,26 +36,31 @@ def upload():
     # Instantiate your form class
     myform= UploadForm()
     # Validate file upload on submit
-    if request.method == 'POST': #and myform.validate_on_submit():
+    if request.method == 'POST' and myform.validate_on_submit():
         # Get file data and save to your uploads folder
-        photo= request.files['form']
+        photo= request.files['file']
         photoname=secure_filename(photo.filename)
         photo.save(os.path.join(app.config['UPLOAD_FOLDER'], photoname))
         flash('File Saved', 'success')
         return redirect(url_for('home'))
+    flash_errors(myform)
     return render_template('upload.html', form=myform)
+ 
     
-"""def get_uploaded_images():
+def get_uploaded_images():
     rootdir = os.getcwd()
-    print rootdir
-    for subdir, dirs, files in os.walk(rootdir + '/some/folder'):
+    lst=[]
+    #print (rootdir)
+    for subdir, dirs, files in os.walk(rootdir + '/app/static/uploads'):
         for file in files:
-            print os.path.join(subdir, file)""" 
+            #lst.append(os.path.join(subdir, file))
+            lst.append(file)
+    return lst
 
 @app.route('/files')
 def files():
-    return render_template('files.html')
-
+    links=get_uploaded_images()
+    return render_template('files.html', rut=links)
 
 
 @app.route('/login', methods=['POST', 'GET'])
